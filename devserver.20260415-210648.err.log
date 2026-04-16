@@ -1,0 +1,540 @@
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ Error: aborted
+    at ignore-listed frames {
+  code: 'ECONNRESET'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: 'Unterminated string in JSON at position 823 (line 30 column 12)',
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: 'Unterminated string in JSON at position 805 (line 29 column 17)',
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or '}' after property value in JSON at position 819 (line 30 column 21)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/1368'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ Failed to generate static paths for /api/products/[id]:
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  type: 'SyntaxError'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/suppliers'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/3271'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/suppliers'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/aliases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ Error: aborted
+    at ignore-listed frames {
+  code: 'ECONNRESET'
+}
+⨯ Error: aborted
+    at ignore-listed frames {
+  code: 'ECONNRESET'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/3522'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or ']' after array element in JSON at position 11363 (line 393 column 10)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/suppliers'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/suppliers'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ Error: aborted
+    at ignore-listed frames {
+  code: 'ECONNRESET'
+}
+⨯ Error: aborted
+    at ignore-listed frames {
+  code: 'ECONNRESET'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/3612'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ Failed to generate static paths for /api/products/[id]:
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  type: 'SyntaxError'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ Failed to generate static paths for /api/products/[id]:
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  type: 'SyntaxError'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+Process Invoice Error: Error: Gemini service is temporarily busy
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.',
+  status: 503,
+  help: 'Retry after a short wait. Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or ']' after array element in JSON at position 7327 (line 249 column 10)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or ']' after array element in JSON at position 5196 (line 177 column 10)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/suppliers'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/purchases'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or ']' after array element in JSON at position 7239 (line 249 column 10)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: 'Expected double-quoted property name in JSON at position 777 (line 27 column 35)',
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or '}' after property value in JSON at position 753 (line 26 column 33)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: Gemini service is temporarily busy
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.',
+  status: 503,
+  help: 'Retry after a short wait. Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/3567'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or ']' after array element in JSON at position 5165 (line 177 column 10)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: 'Expected double-quoted property name in JSON at position 774 (line 27 column 35)',
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+Process Invoice Error: Error: AI Model Error
+    at buildError (lib\server\geminiOcr.ts:80:19)
+    at runGeminiOnly (lib\server\geminiOcr.ts:144:11)
+    at async POST (app\api\ocr\process-invoice\route.ts:22:27)
+  78 | function buildError(lastError: any, triedModels: string[]): GeminiOcrError {
+  79 |     const message = String(lastError?.message || "Unknown OCR failure");
+> 80 |     const error = new Error("AI OCR failed") as GeminiOcrError;
+     |                   ^
+  81 |     error.details = message;
+  82 |
+  83 |     if (message.includes("429")) { {
+  details: "Expected ',' or ']' after array element in JSON at position 5969 (line 201 column 10)",
+  status: 500,
+  help: 'Tried models: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-flash-latest'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ Error: aborted
+    at ignore-listed frames {
+  code: 'ECONNRESET'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products/suppliers'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/api/products'
+}
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/purchases'
+}
+^C^C

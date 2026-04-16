@@ -1,0 +1,3 @@
+{
+  "/api/ocr/invoice/route": "app/api/ocr/invoice/route.js"
+}
