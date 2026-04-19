@@ -5,6 +5,22 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { Loader2, Lock, Mail, Pill } from "lucide-react";
 
+const resolveLoginError = (errorCode: string | null | undefined) => {
+    if (!errorCode) {
+        return "Unable to sign in. Please try again.";
+    }
+
+    if (errorCode === "CredentialsSignin") {
+        return "Invalid email or password.";
+    }
+
+    if (errorCode === "Configuration") {
+        return "Server auth configuration issue. Check VPS env settings.";
+    }
+
+    return `Sign-in failed: ${errorCode}`;
+};
+
 function LoginPageInner() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -36,7 +52,7 @@ function LoginPageInner() {
         });
 
         if (!result || result.error) {
-            setError("Invalid email or password.");
+            setError(resolveLoginError(result?.error));
             setIsSubmitting(false);
             return;
         }

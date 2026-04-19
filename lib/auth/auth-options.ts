@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
+import { authSecret } from "@/lib/auth/env";
 import { verifyPassword } from "@/lib/auth/password";
 
 const toNullableNumber = (value: unknown) => {
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: authSecret ?? undefined,
     pages: {
         signIn: "/login",
     },

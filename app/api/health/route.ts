@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { UserRole } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { authSecret, authUrl } from "@/lib/auth/env";
 import { getReportDateCutoff } from "@/lib/reportDates";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +18,8 @@ export async function GET() {
             purchaseTotals,
             saleTotals,
             batchTotals,
+            users,
+            admins,
             databaseList,
         ] = await Promise.all([
             prisma.product.count(),
@@ -38,6 +42,10 @@ export async function GET() {
             prisma.batch.aggregate({
                 _sum: { quantity: true },
             }),
+            prisma.user.count(),
+            prisma.user.count({
+                where: { role: UserRole.ADMIN },
+            }),
             prisma.$queryRawUnsafe<Array<{ seq: number; name: string; file: string }>>("PRAGMA database_list;"),
         ]);
 
@@ -51,12 +59,20 @@ export async function GET() {
             database: {
                 file: mainDatabase?.file || null,
             },
+            runtime: {
+                nodeEnv: process.env.NODE_ENV || null,
+                databaseUrl: process.env.DATABASE_URL || null,
+                nextauthUrl: authUrl,
+                hasAuthSecret: Boolean(authSecret),
+            },
             counts: {
                 products,
                 suppliers,
                 purchases,
                 batches,
                 sales,
+                users,
+                admins,
             },
             totals: {
                 purchaseAmount: purchaseTotals._sum.total || 0,

@@ -6,6 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
+    "check:vps-auth": "node scripts/check-vps-auth.cjs",
+    "reset:admin": "node scripts/reset-admin-password.cjs",
     "import:folder1": "node watch_folder_1.js",
     "import:folder1:once": "node import_folder_1.js",
     "repair:folder1": "node repair_folder_1_from_state.js"
