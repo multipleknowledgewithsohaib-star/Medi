@@ -16,6 +16,7 @@ export async function GET() {
             purchaseTotals,
             saleTotals,
             batchTotals,
+            databaseList,
         ] = await Promise.all([
             prisma.product.count(),
             prisma.supplier.count(),
@@ -37,11 +38,19 @@ export async function GET() {
             prisma.batch.aggregate({
                 _sum: { quantity: true },
             }),
+            prisma.$queryRawUnsafe<Array<{ seq: number; name: string; file: string }>>("PRAGMA database_list;"),
         ]);
+
+        const mainDatabase = Array.isArray(databaseList)
+            ? databaseList.find((entry) => entry.name === "main")
+            : null;
 
         return NextResponse.json({
             status: "ok",
             reportDateCutoff: reportDateCutoff.toISOString(),
+            database: {
+                file: mainDatabase?.file || null,
+            },
             counts: {
                 products,
                 suppliers,
