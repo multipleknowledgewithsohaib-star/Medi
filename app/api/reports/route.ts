@@ -1,23 +1,25 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { REPORT_DATE_CUTOFF } from "@/lib/reportDates";
+import { getReportDateCutoff } from "@/lib/reportDates";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
+        const reportDateCutoff = getReportDateCutoff();
+
         // Set a much older start date to include imported historical data from 2023-2024
         const startDate = new Date("2010-01-01");
 
         // Fetch all relevant Sales
         const allSales = await prisma.sale.findMany({
-            where: { date: { gte: startDate, lte: REPORT_DATE_CUTOFF } },
+            where: { date: { gte: startDate } },
             select: { date: true, total: true }
         });
 
         // Fetch all relevant Purchases
         const allPurchases = await prisma.purchase.findMany({
-            where: { date: { gte: startDate, lte: REPORT_DATE_CUTOFF } },
+            where: { date: { gte: startDate } },
             select: { date: true, total: true }
         });
 
@@ -61,7 +63,7 @@ export async function GET() {
         // Top Products
         const topProductsGroups = await prisma.saleItem.groupBy({
             where: {
-                sale: { date: { gte: startDate, lte: REPORT_DATE_CUTOFF } }
+                sale: { date: { gte: startDate } }
             },
             by: ['productId'],
             _sum: { quantity: true, price: true },

@@ -1,30 +1,32 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { REPORT_DATE_CUTOFF } from "@/lib/reportDates";
+import { getReportDateCutoff } from "@/lib/reportDates";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
+        const reportDateCutoff = getReportDateCutoff();
+
         const sales = await prisma.sale.findMany({
-            where: { date: { lte: REPORT_DATE_CUTOFF } },
+            where: { date: { lte: reportDateCutoff } },
             orderBy: { date: 'desc' },
             take: 10
         });
 
         const purchases = await prisma.purchase.findMany({
-            where: { date: { lte: REPORT_DATE_CUTOFF } },
+            where: { date: { lte: reportDateCutoff } },
             orderBy: { date: 'desc' },
             take: 10
         });
 
         const totalRevenue = await prisma.sale.aggregate({
-            where: { date: { lte: REPORT_DATE_CUTOFF } },
+            where: { date: { lte: reportDateCutoff } },
             _sum: { total: true }
         });
 
         const totalExpenses = await prisma.purchase.aggregate({
-            where: { date: { lte: REPORT_DATE_CUTOFF } },
+            where: { date: { lte: reportDateCutoff } },
             _sum: { total: true }
         });
 

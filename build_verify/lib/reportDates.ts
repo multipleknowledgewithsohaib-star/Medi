@@ -1,6 +1,8 @@
-const REPORT_DATE_CUTOFF_ISO = "2026-04-30";
-
-export const REPORT_DATE_CUTOFF = new Date(`${REPORT_DATE_CUTOFF_ISO}T23:59:59.999Z`);
+export const getReportDateCutoff = () => {
+    const cutoff = new Date();
+    cutoff.setHours(23, 59, 59, 999);
+    return cutoff;
+};
 
 const parseDateValue = (value: unknown): Date | null => {
     if (value instanceof Date) {
@@ -18,7 +20,7 @@ const parseDateValue = (value: unknown): Date | null => {
 
 export const isWithinReportWindow = (value: unknown) => {
     const date = parseDateValue(value);
-    return Boolean(date && date.getTime() <= REPORT_DATE_CUTOFF.getTime());
+    return Boolean(date && date.getTime() <= getReportDateCutoff().getTime());
 };
 
 export const clampDateToReportCutoff = (value: unknown) => {
@@ -27,6 +29,7 @@ export const clampDateToReportCutoff = (value: unknown) => {
         return "";
     }
 
-    const safeDate = date.getTime() > REPORT_DATE_CUTOFF.getTime() ? REPORT_DATE_CUTOFF : date;
+    const reportDateCutoff = getReportDateCutoff();
+    const safeDate = date.getTime() > reportDateCutoff.getTime() ? reportDateCutoff : date;
     return safeDate.toISOString().split("T")[0];
 };

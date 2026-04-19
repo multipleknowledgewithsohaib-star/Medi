@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
-import { REPORT_DATE_CUTOFF } from "../../../lib/reportDates";
+import { getReportDateCutoff } from "../../../lib/reportDates";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
+        const reportDateCutoff = getReportDateCutoff();
         const startDate = new Date("2010-01-01");
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -15,7 +16,6 @@ export async function GET() {
             where: {
                 date: {
                     gte: today,
-                    lte: REPORT_DATE_CUTOFF,
                 },
             },
         });
@@ -27,7 +27,6 @@ export async function GET() {
             where: {
                 date: {
                     gte: startDate,
-                    lte: REPORT_DATE_CUTOFF
                 }
             }
         });
@@ -58,7 +57,6 @@ export async function GET() {
                     sale: {
                         date: {
                             gte: startDate,
-                            lte: REPORT_DATE_CUTOFF
                         }
                     }
                 },
@@ -88,7 +86,6 @@ export async function GET() {
                     sale: {
                         date: {
                             gte: startDate,
-                            lte: REPORT_DATE_CUTOFF
                         }
                     }
                 },
