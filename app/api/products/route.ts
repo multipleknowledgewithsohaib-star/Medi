@@ -62,9 +62,9 @@ export async function GET() {
         const normalizedProducts = products.map((product) => ({
             ...product,
             pricingSnapshotId: product.pricingSnapshots[0]?.id ?? null,
-            stock: auth.user.role === POS_ROLE && auth.user.branchId
+            stock: product.batches.length > 0
                 ? product.batches.reduce((sum, batch) => sum + (Number(batch.quantity) || 0), 0)
-                : product.stock,
+                : Number(product.stock) || 0,
         }));
 
         return NextResponse.json(normalizedProducts);

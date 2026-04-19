@@ -53,8 +53,13 @@ export async function GET(
             return NextResponse.json({ error: "Product not found" }, { status: 404 });
         }
 
+        const computedStock = product.batches.length > 0
+            ? product.batches.reduce((sum, batch) => sum + (Number(batch.quantity) || 0), 0)
+            : Number(product.stock) || 0;
+
         return NextResponse.json({
             ...product,
+            stock: computedStock,
             pricingSnapshotId: product.pricingSnapshots[0]?.id ?? null,
         });
     } catch (error: unknown) {

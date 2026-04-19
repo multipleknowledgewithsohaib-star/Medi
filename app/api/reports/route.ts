@@ -6,7 +6,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
-        const startDate = new Date("2025-01-01");
+        // Set a much older start date to include imported historical data from 2023-2024
+        const startDate = new Date("2010-01-01");
 
         // Fetch all relevant Sales
         const allSales = await prisma.sale.findMany({

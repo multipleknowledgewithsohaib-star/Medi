@@ -11,6 +11,8 @@ interface HeaderProps {
     onToggleSidebar: () => void;
 }
 
+const GLOBAL_BRANCH = { id: "all", name: "All Branches", type: "Global" };
+
 export function Header({ onToggleSidebar }: HeaderProps) {
     const { data: session, status } = useSession();
     const [branches, setBranches] = useState<any[]>([]);
@@ -50,12 +52,13 @@ export function Header({ onToggleSidebar }: HeaderProps) {
                 setBranches(branchList);
 
                 const storedBranch = storage.get("activeBranch", null);
-                if (storedBranch) {
+                const storedBranchExists = storedBranch?.id === "all" || branchList.some((branch: any) => branch.id === storedBranch?.id);
+
+                if (storedBranch && storedBranchExists) {
                     setActiveBranch(storedBranch);
-                } else if (branchList.length > 0) {
-                    const defaultBranch = branchList[0];
-                    setActiveBranch(defaultBranch);
-                    storage.set("activeBranch", defaultBranch);
+                } else {
+                    setActiveBranch(GLOBAL_BRANCH);
+                    storage.set("activeBranch", GLOBAL_BRANCH);
                 }
             } catch (error) {
                 if (!cancelled) {

@@ -120,7 +120,6 @@ export async function POST(req: Request) {
                     where: { id: productId },
                     select: {
                         id: true,
-                        stock: true,
                         salePrice: true,
                         discountPercent: true,
                         isDiscountActive: true,
@@ -132,7 +131,19 @@ export async function POST(req: Request) {
                     throw new Error("One or more selected products are invalid.");
                 }
 
-                if ((product.stock || 0) < quantity) {
+                const availableStockSummary = await tx.batch.aggregate({
+                    where: {
+                        productId,
+                        ...(normalizedBranchId ? { branchId: normalizedBranchId } : {}),
+                    },
+                    _sum: {
+                        quantity: true,
+                    },
+                });
+
+                const availableProductStock = Number(availableStockSummary._sum.quantity) || 0;
+
+                if (availableProductStock < quantity) {
                     throw new Error("Selected product does not have enough stock.");
                 }
 
@@ -197,7 +208,7 @@ export async function POST(req: Request) {
                             data: {
                                 batchNo: fallbackBatchNo,
                                 expiryDate: new Date("2099-12-31T00:00:00.000Z"),
-                                quantity: product.stock,
+                                quantity: availableProductStock,
                                 productId,
                                 branchId: normalizedBranchId ?? null,
                             },
@@ -278,22 +289,31 @@ export async function POST(req: Request) {
                 },
             });
 
-            for (const item of normalizedItems) {
-                await tx.product.update({
-                    where: { id: item.productId },
-                    data: {
-                        stock: {
-                            decrement: item.quantity,
-                        },
-                    },
-                });
+            const productIdsToSync = new Set<number>();
 
+            for (const item of normalizedItems) {
                 await tx.batch.update({
                     where: { id: item.batchId },
                     data: {
                         quantity: {
                             decrement: item.quantity,
                         },
+                    },
+                });
+
+                productIdsToSync.add(item.productId);
+            }
+
+            for (const productId of productIdsToSync) {
+                const remainingStock = await tx.batch.aggregate({
+                    where: { productId },
+                    _sum: { quantity: true },
+                });
+
+                await tx.product.update({
+                    where: { id: productId },
+                    data: {
+                        stock: remainingStock._sum.quantity || 0,
                     },
                 });
             }

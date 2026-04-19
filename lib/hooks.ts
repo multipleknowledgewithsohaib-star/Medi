@@ -42,10 +42,11 @@ export const isPlaceholderProductRecord = (product: any) => {
 };
 
 const normalizeProductRecord = (product: any, allBatches: any[] = []) => {
+    const apiBatches = Array.isArray(product?.batches) ? product.batches : [];
     const productBatches = allBatches.filter((batch: any) => String(batch.productId) === String(product?.id));
-    const resolvedBatches = productBatches.length > 0
-        ? productBatches
-        : (Array.isArray(product?.batches) ? product.batches : []);
+    const resolvedBatches = apiBatches.length > 0
+        ? apiBatches
+        : productBatches;
     const batchStock = resolvedBatches.reduce((sum: number, batch: any) => sum + (Number(batch?.quantity) || 0), 0);
     const numericStock = toFiniteNumber(product?.stock, 0);
     const resolvedStock = resolvedBatches.length > 0
@@ -101,44 +102,6 @@ const sanitizeProductSnapshot = (product: any) => ({
     updatedAt: typeof product?.updatedAt === 'string' ? product.updatedAt : undefined,
 });
 
-const mergeProductSnapshots = (baseProduct: any, localProduct: any) => ({
-    ...baseProduct,
-    ...(() => {
-        const localName = normalizeProductText(localProduct?.name);
-        if (!localName || PLACEHOLDER_PRODUCT_NAMES.has(localName.toLowerCase())) {
-            return {};
-        }
-        return { name: localName };
-    })(),
-    ...(normalizeProductText(localProduct?.item_code) ? { item_code: normalizeProductText(localProduct.item_code) } : {}),
-    ...(normalizeProductText(localProduct?.brand) ? { brand: normalizeProductText(localProduct.brand) } : {}),
-    ...(normalizeProductText(localProduct?.category) ? { category: normalizeProductText(localProduct.category) } : {}),
-    ...(hasExplicitNumberValue(localProduct?.purchasePrice) ? { purchasePrice: Number(localProduct.purchasePrice) } : {}),
-    ...(hasExplicitNumberValue(localProduct?.salePrice) ? { salePrice: Number(localProduct.salePrice) } : {}),
-    ...(hasExplicitNumberValue(localProduct?.discountPercent) ? { discountPercent: Number(localProduct.discountPercent) } : {}),
-    ...(localProduct?.isDiscountActive !== undefined ? { isDiscountActive: Boolean(localProduct.isDiscountActive) } : {}),
-    ...(hasExplicitNumberValue(localProduct?.pricingSnapshotId) ? { pricingSnapshotId: Number(localProduct.pricingSnapshotId) } : {}),
-    ...(hasExplicitNumberValue(localProduct?.stock) ? { stock: Number(localProduct.stock) } : {}),
-    ...(() => {
-        const unitsPerPack = Number(localProduct?.unitsPerPack);
-        return hasExplicitNumberValue(localProduct?.unitsPerPack) && unitsPerPack > 0 ? { unitsPerPack } : {};
-    })(),
-    ...(() => {
-        const stripsPerBox = Number(localProduct?.stripsPerBox);
-        return hasExplicitNumberValue(localProduct?.stripsPerBox) && stripsPerBox > 0 ? { stripsPerBox } : {};
-    })(),
-    ...(() => {
-        const tabletsPerStrip = Number(localProduct?.tabletsPerStrip);
-        return hasExplicitNumberValue(localProduct?.tabletsPerStrip) && tabletsPerStrip > 0 ? { tabletsPerStrip } : {};
-    })(),
-    ...(() => {
-        const defaultDiscount = Number(localProduct?.defaultDiscount);
-        return hasExplicitNumberValue(localProduct?.defaultDiscount) && defaultDiscount >= 0 ? { defaultDiscount } : {};
-    })(),
-    ...(Array.isArray(localProduct?.batches) && localProduct.batches.length > 0 ? { batches: localProduct.batches } : {}),
-    id: baseProduct.id,
-});
-
 const isSameProductRecord = (left: any, right: any) => {
     const leftCode = typeof left?.item_code === "string" ? left.item_code.trim().toLowerCase() : "";
     const rightCode = typeof right?.item_code === "string" ? right.item_code.trim().toLowerCase() : "";
@@ -177,16 +140,14 @@ export function useData<T>(url: string) {
                         if (url === "/api/products") {
                             const allBatches = storage.get('batches', []);
                             const localProducts = storage.get('products', []);
-                            
-                            // Merge logic: Prioritize DB products, but keep unique local ones
+
+                            // DB is the source of truth. Keep only unmatched local-only records.
                             const dbProducts = Array.isArray(jsonData) ? jsonData : [];
                             const mergedProducts = [...dbProducts];
-                            
+
                             localProducts.forEach((lp: any) => {
-                                const matchIndex = mergedProducts.findIndex(dp => isSameProductRecord(dp, lp));
-                                if (matchIndex >= 0) {
-                                    mergedProducts[matchIndex] = mergeProductSnapshots(mergedProducts[matchIndex], lp);
-                                } else if (!isPlaceholderProductRecord(lp)) {
+                                const hasDbMatch = mergedProducts.some(dp => isSameProductRecord(dp, lp));
+                                if (!hasDbMatch && !isPlaceholderProductRecord(lp)) {
                                     mergedProducts.push(sanitizeProductSnapshot(lp));
                                 }
                             });
@@ -213,6 +174,13 @@ export function useData<T>(url: string) {
                         } else {
                             setData(jsonData);
                         }
+                    } else if (url === "/api/batches") {
+                        try {
+                            storage.setSilently('batches', Array.isArray(jsonData) ? jsonData : []);
+                        } catch (cacheError) {
+                            console.warn("Batch cache sync failed:", cacheError);
+                        }
+                        setData(jsonData);
                     } else if (url === "/api/suppliers") {
                         // MERGE LOGIC for Suppliers: Combine DB with LocalStorage
                         const dbSuppliers = jsonData;
@@ -255,8 +223,6 @@ export function useData<T>(url: string) {
                         });
 
                         setData(mergedPurchases as any);
-                    } else if (url === "/api/finance" || url === "/api/reports") {
-                        setData(calculateFinanceSummary(branchId === 'all' ? null : branchId) as any);
                     } else {
                         // Generic handler for all other API routes
                         setData(jsonData);

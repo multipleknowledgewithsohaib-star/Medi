@@ -1,2 +1,13 @@
-⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
-⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at spawn (node:child_process:796:9)
+    at fork (node:child_process:174:10)
+    at E:\downloads all\project_corona_tracker-master\chicken farm website\Medi\node_modules\next\dist\cli\next-dev.js:243:45
+    at new Promise (<anonymous>)
+    at startServer (E:\downloads all\project_corona_tracker-master\chicken farm website\Medi\node_modules\next\dist\cli\next-dev.js:212:16)
+    at runDevServer (E:\downloads all\project_corona_tracker-master\chicken farm website\Medi\node_modules\next\dist\cli\next-dev.js:334:23)
+    at Module.nextDev (E:\downloads all\project_corona_tracker-master\chicken farm website\Medi\node_modules\next\dist\cli\next-dev.js:342:11) {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'spawn'
+}

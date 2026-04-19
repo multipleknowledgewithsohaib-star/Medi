@@ -32,22 +32,31 @@ export async function DELETE(
         }
 
         await prisma.$transaction(async (tx) => {
-            for (const item of sale.items) {
-                await tx.product.update({
-                    where: { id: item.productId },
-                    data: {
-                        stock: {
-                            increment: item.quantity,
-                        },
-                    },
-                });
+            const productIdsToSync = new Set<number>();
 
+            for (const item of sale.items) {
                 await tx.batch.update({
                     where: { id: item.batchId },
                     data: {
                         quantity: {
                             increment: item.quantity,
                         },
+                    },
+                });
+
+                productIdsToSync.add(item.productId);
+            }
+
+            for (const productId of productIdsToSync) {
+                const remainingStock = await tx.batch.aggregate({
+                    where: { productId },
+                    _sum: { quantity: true },
+                });
+
+                await tx.product.update({
+                    where: { id: productId },
+                    data: {
+                        stock: remainingStock._sum.quantity || 0,
                     },
                 });
             }

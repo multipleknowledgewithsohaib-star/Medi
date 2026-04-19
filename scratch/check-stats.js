@@ -10,22 +10,17 @@ async function main() {
     const transactions = await prisma.accountTransaction.count();
     const suppliers = await prisma.supplier.count();
 
-    const batchesWithQty = await prisma.batch.count({ where: { quantity: { gt: 0 } } });
-    const batchesExpired = await prisma.batch.count({ where: { expiryDate: { lt: new Date() } } });
-    const branches = await prisma.branch.findMany();
-    const batchBranchStats = await prisma.batch.groupBy({
-      by: ['branchId'],
-      _count: { _all: true },
-      _sum: { quantity: true }
-    });
-
-    const sampleBatch = await prisma.batch.findFirst({ include: { product: true } });
+    const oldestPurchase = await prisma.purchase.findFirst({ orderBy: { date: 'asc' } });
+    const newestPurchase = await prisma.purchase.findFirst({ orderBy: { date: 'desc' } });
+    const oldestSale = await prisma.sale.findFirst({ orderBy: { date: 'asc' } });
 
     console.log(JSON.stringify({
       counts: { products, batches, purchases, sales, transactions, suppliers },
-      batchStats: { batchesWithQty, batchesExpired, batchBranchStats },
-      branches,
-      sampleBatch
+      dates: { 
+        oldestPurchase: oldestPurchase?.date, 
+        newestPurchase: newestPurchase?.date,
+        oldestSale: oldestSale?.date
+      }
     }, null, 2));
   } catch (err) {
     console.error(err);

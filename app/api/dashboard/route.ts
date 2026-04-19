@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
-        const startDate = new Date("2025-01-01");
+        const startDate = new Date("2010-01-01");
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -33,15 +33,6 @@ export async function GET() {
         });
         const totalRevenue = allSales.reduce((sum, s) => sum + s.total, 0);
 
-        // Low Stock Count
-        const lowStockItems = await prisma.product.count({
-            where: {
-                stock: {
-                    lt: 20,
-                },
-            },
-        });
-
         // Expiring Soon (Count 30 days)
         const thirtyDaysFromNow = new Date();
         thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
@@ -51,6 +42,7 @@ export async function GET() {
             recentSales,
             expiryAlerts,
             topSelling,
+            stockProducts,
         ] = await Promise.all([
             prisma.batch.count({
                 where: {
@@ -112,17 +104,38 @@ export async function GET() {
                 },
                 take: 4
             }),
+            prisma.product.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    stock: true,
+                    batches: {
+                        select: {
+                            quantity: true,
+                        },
+                    },
+                },
+            }),
         ]);
 
-        const topSellingProducts = await Promise.all(topSelling.map(async (item) => {
-            const product = await prisma.product.findUnique({ where: { id: item.productId } });
+        const productStockMap = new Map(stockProducts.map((product) => {
+            const computedStock = product.batches.length > 0
+                ? product.batches.reduce((sum, batch) => sum + (Number(batch.quantity) || 0), 0)
+                : Number(product.stock) || 0;
+            return [product.id, { name: product.name, stock: computedStock }];
+        }));
+
+        const lowStockItems = Array.from(productStockMap.values()).filter((product) => product.stock < 20).length;
+
+        const topSellingProducts = topSelling.map((item) => {
+            const product = productStockMap.get(item.productId);
             return {
                 name: product?.name,
                 sold: item._sum.quantity,
                 revenue: item._sum.price,
-                stock: product?.stock
+                stock: product?.stock ?? 0
             };
-        }));
+        });
 
         return NextResponse.json({
             stats: {
