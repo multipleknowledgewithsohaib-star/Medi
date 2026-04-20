@@ -21,6 +21,14 @@ export function Header({ onToggleSidebar }: HeaderProps) {
     const isPosUser = session?.user?.role === POS_ROLE;
 
     useEffect(() => {
+        if (status === "loading") {
+            return;
+        }
+
+        if (!session?.user) {
+            return;
+        }
+
         if (isPosUser) {
             const lockedBranch = session?.user?.branchId
                 ? {
@@ -72,7 +80,7 @@ export function Header({ onToggleSidebar }: HeaderProps) {
         return () => {
             cancelled = true;
         };
-    }, [isPosUser, session?.user?.branchId, session?.user?.branchName]);
+    }, [isPosUser, session?.user, session?.user?.branchId, session?.user?.branchName, status]);
 
     const handleBranchChange = (branch: any) => {
         if (isPosUser) {

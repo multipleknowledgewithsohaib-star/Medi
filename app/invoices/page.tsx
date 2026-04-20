@@ -26,6 +26,22 @@ export default function InvoicesPage() {
     const getItemRate = (item: any) => Number(item?.rateAtSaleTime ?? item?.price ?? 0);
     const getItemDiscount = (item: any) => Number(item?.discountAmountAtSaleTime ?? item?.discountAmount ?? 0);
     const getItemTotal = (item: any) => Number(item?.netAmount ?? item?.lineTotal ?? ((getItemRate(item) * Number(item?.quantity || 0)) - getItemDiscount(item)));
+    const getItemName = (item: any) => item?.product?.name || item?.name || "Unknown Product";
+    const getBatchLabel = (item: any) => {
+        if (typeof item?.batch === "string" && item.batch.trim()) {
+            return item.batch.trim();
+        }
+
+        if (typeof item?.batch?.batchNo === "string" && item.batch.batchNo.trim()) {
+            return item.batch.batchNo.trim();
+        }
+
+        if (typeof item?.batchNo === "string" && item.batchNo.trim()) {
+            return item.batchNo.trim();
+        }
+
+        return "SYSTEM BATCH";
+    };
 
     const filteredInvoices = invoices?.filter(inv =>
         inv.invoiceNo?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -197,11 +213,11 @@ export default function InvoicesPage() {
                                         <div className="col-span-2 text-right">Total</div>
                                     </div>
                                     <div className="space-y-2">
-                                        {selectedInvoice.items.map((item: any, idx: number) => (
+                                                {selectedInvoice.items.map((item: any, idx: number) => (
                                             <div key={idx} className="grid grid-cols-12 gap-4 p-4 bg-gray-50 rounded-2xl items-center border border-transparent hover:border-purple-100 transition-all">
                                                 <div className="col-span-4">
-                                                    <p className="font-black text-gray-900 uppercase text-sm">{item.product?.name || item.name}</p>
-                                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">{item.batch || "SYSTEM BATCH"}</p>
+                                                    <p className="font-black text-gray-900 uppercase text-sm">{getItemName(item)}</p>
+                                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">{getBatchLabel(item)}</p>
                                                 </div>
                                                 <div className="col-span-2 text-center font-black text-purple-600 text-sm">{item.quantity}</div>
                                                 <div className="col-span-2 text-right text-xs font-bold text-gray-600">PKR {getItemRate(item).toFixed(2)}</div>
@@ -250,7 +266,7 @@ export default function InvoicesPage() {
                                     ...selectedInvoice,
                                     items: selectedInvoice.items.map((i: any) => ({
                                         ...i,
-                                        name: i.product?.name || i.name || "Unknown Product"
+                                        name: getItemName(i)
                                     }))
                                 }, selectedInvoice.createdBy?.name || session?.user?.name || "MediStock User")}
                                 className="flex-1 py-4 rounded-2xl bg-gray-900 text-white font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:bg-black transition-all shadow-lg shadow-gray-200"
