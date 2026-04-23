@@ -100,13 +100,32 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Discount override attempts are not allowed." }, { status: 403 });
         }
 
-        const sessionBranchId = toOptionalPositiveId(auth.user.branchId);
-        const requestedBranchId = toOptionalPositiveId(branchId);
-        const normalizedBranchId = isAdminUser(auth.user)
-            ? requestedBranchId ?? sessionBranchId
-            : sessionBranchId;
-
         const result = await prisma.$transaction(async (tx) => {
+            const sessionBranchId = toOptionalPositiveId(auth.user.branchId);
+            const requestedBranchId = toOptionalPositiveId(branchId);
+
+            const branchCandidates = isAdminUser(auth.user)
+                ? [requestedBranchId, sessionBranchId]
+                : [sessionBranchId];
+
+            let normalizedBranchId: number | null = null;
+
+            for (const candidate of branchCandidates) {
+                if (!candidate) {
+                    continue;
+                }
+
+                const existingBranch = await tx.branch.findUnique({
+                    where: { id: candidate },
+                    select: { id: true },
+                });
+
+                if (existingBranch) {
+                    normalizedBranchId = existingBranch.id;
+                    break;
+                }
+            }
+
             const normalizedItems: Array<{
                 productId: number;
                 batchId: number;
@@ -339,7 +358,7 @@ export async function POST(req: Request) {
     } catch (error: unknown) {
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2003") {
             return NextResponse.json(
-                { error: "Sale could not be saved because one selected branch, user, product, or batch reference is outdated. Please refresh the page and try again." },
+                { error: "Sale could not be saved because one selected branch, user, product, or batch reference is outdated or missing. Please refresh the page and try again." },
                 { status: 400 }
             );
         }
