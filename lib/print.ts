@@ -8,6 +8,20 @@ const escapeHtml = (value: unknown) =>
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
 
+const STORE_ADDRESS_LINES = [
+    "SHOP # 2, NEAR NOOR HOSPITAL, BLOCK 19,",
+    "AL NOOR SOCIETY, KARACHI",
+];
+
+const RECEIPT_POLICY_LINES = [
+    '"No Return Or Exchange Without Receipt"',
+    '"No Exchange After 3 Days Of Purchase"',
+    "",
+    '"No Cash Refund"',
+];
+
+const STORE_LOGO_SRC = "/medistock-logo-small.png";
+
 const normalizeInvoiceItem = (item: any) => {
     const quantity = Number(item?.quantity) || 0;
     const rate = roundCurrency(
@@ -48,6 +62,11 @@ export const printInvoice = (sale: any, userName?: string) => {
     const changeAmount = roundCurrency(sale?.changeAmount ?? Math.max(0, paidAmount - grandTotal));
     const receiptNo = sale?.invoiceNo || `INV-${String(sale?.id ?? "").padStart(6, "0")}`;
     const saleDate = sale?.date ? new Date(sale.date) : new Date();
+    const logoSrc = new URL(STORE_LOGO_SRC, window.location.origin).toString();
+    const storeAddressHtml = STORE_ADDRESS_LINES.map((line) => `<div>${escapeHtml(line)}</div>`).join("");
+    const receiptPolicyHtml = RECEIPT_POLICY_LINES.map((line) =>
+        line ? `<div>${escapeHtml(line)}</div>` : `<div class="policy-gap"></div>`
+    ).join("");
 
     const html = `
         <html>
@@ -66,6 +85,23 @@ export const printInvoice = (sale: any, userName?: string) => {
                     .text-right { text-align: right; }
                     .bold { font-weight: bold; }
                     .divider { border-top: 1px dashed #000; margin: 4px 0; }
+                    .receipt-logo {
+                        margin-bottom: 4px;
+                    }
+                    .receipt-logo-image {
+                        display: block;
+                        width: 34mm;
+                        max-width: 100%;
+                        height: auto;
+                        margin: 0 auto;
+                    }
+                    .store-address {
+                        margin-top: 3px;
+                        font-size: 10px;
+                        font-weight: bold;
+                        line-height: 1.35;
+                        text-transform: uppercase;
+                    }
                     .meta-row, .summary-row {
                         display: flex;
                         justify-content: space-between;
@@ -83,6 +119,14 @@ export const printInvoice = (sale: any, userName?: string) => {
                     .tiny {
                         font-size: 8px;
                     }
+                    .receipt-policy {
+                        font-size: 9px;
+                        line-height: 1.45;
+                        margin-top: 8px;
+                    }
+                    .policy-gap {
+                        height: 7px;
+                    }
                     .totals-box {
                         border: 1px solid #000;
                         padding: 4px;
@@ -98,9 +142,10 @@ export const printInvoice = (sale: any, userName?: string) => {
             </head>
             <body>
                 <div class="text-center">
-                    <div class="bold" style="font-size:18px;">MediStock</div>
-                    <div>SHAHRAH-E-PAKISTAN, KARACHI</div>
-                    <div>UAN: 021 111 246 246</div>
+                    <div class="receipt-logo">
+                        <img class="receipt-logo-image" src="${logoSrc}" alt="MediStock logo" />
+                    </div>
+                    <div class="store-address">${storeAddressHtml}</div>
                     <div class="bold" style="margin-top: 4px;">CUSTOMER INVOICE</div>
                 </div>
 
@@ -174,13 +219,12 @@ export const printInvoice = (sale: any, userName?: string) => {
                 </div>
 
                 <div class="divider"></div>
-                <div class="text-center tiny">
-                    Discount is shown in rupees as applied at the time of sale.<br/>
-                    Product discount percentage is not printed on customer invoices.
+                <div class="text-center receipt-policy">
+                    ${receiptPolicyHtml}
                 </div>
 
                 <div style="margin-top: 10px;" class="text-center bold">
-                    THANK YOU & COME AGAIN
+                    THANK YOU FOR YOUR VISIT
                 </div>
 
                 <script>

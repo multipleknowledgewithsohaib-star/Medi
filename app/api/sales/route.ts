@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { ADMIN_ROLE, POS_ROLE } from "@/lib/auth/access";
 import { isAdminUser, requireAuthenticatedUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
@@ -22,6 +23,19 @@ const DISALLOWED_OVERRIDE_FIELDS = [
 
 const hasDiscountOverrideAttempt = (item: Record<string, unknown>) =>
     DISALLOWED_OVERRIDE_FIELDS.some((fieldName) => item[fieldName] !== undefined);
+
+const toOptionalPositiveId = (value: unknown) => {
+    if (value === null || value === undefined) {
+        return null;
+    }
+
+    if (typeof value === "string" && (value.trim() === "" || value.trim().toLowerCase() === "all")) {
+        return null;
+    }
+
+    const parsed = Number(value);
+    return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+};
 
 export async function GET() {
     const auth = await requireAuthenticatedUser([ADMIN_ROLE, POS_ROLE]);
@@ -86,9 +100,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Discount override attempts are not allowed." }, { status: 403 });
         }
 
+        const sessionBranchId = toOptionalPositiveId(auth.user.branchId);
+        const requestedBranchId = toOptionalPositiveId(branchId);
         const normalizedBranchId = isAdminUser(auth.user)
-            ? (Number.isInteger(Number(branchId)) ? Number(branchId) : auth.user.branchId)
-            : auth.user.branchId;
+            ? requestedBranchId ?? sessionBranchId
+            : sessionBranchId;
 
         const result = await prisma.$transaction(async (tx) => {
             const normalizedItems: Array<{
@@ -107,10 +123,8 @@ export async function POST(req: Request) {
             for (const rawItem of items) {
                 const productId = Number(rawItem.productId);
                 const quantity = Number(rawItem.quantity);
-                const requestedBatchId = Number.isInteger(Number(rawItem.batchId)) ? Number(rawItem.batchId) : null;
-                const requestedPricingSnapshotId = Number.isInteger(Number(rawItem.pricingSnapshotId))
-                    ? Number(rawItem.pricingSnapshotId)
-                    : null;
+                const requestedBatchId = toOptionalPositiveId(rawItem.batchId);
+                const requestedPricingSnapshotId = toOptionalPositiveId(rawItem.pricingSnapshotId);
 
                 if (!Number.isInteger(productId) || !(quantity > 0)) {
                     throw new Error("Each sale item needs valid product and quantity values.");
@@ -323,6 +337,13 @@ export async function POST(req: Request) {
 
         return NextResponse.json(result);
     } catch (error: unknown) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2003") {
+            return NextResponse.json(
+                { error: "Sale could not be saved because one selected branch, user, product, or batch reference is outdated. Please refresh the page and try again." },
+                { status: 400 }
+            );
+        }
+
         return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to process sale" }, { status: 500 });
     }
 }
